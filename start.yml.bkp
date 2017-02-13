@@ -1,0 +1,17 @@
+---
+- hosts: nfs 
+  roles:
+    - nfs
+
+- hosts: webservers
+  roles:
+    - webservers
+
+- hosts: loadbalancers
+  roles:
+    - loadbalancers
+
+- hosts: nfs:loadbalancers:webservers 
+  roles:
+    - common
+...

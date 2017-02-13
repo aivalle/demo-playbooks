@@ -1,0 +1,23 @@
+---
+- hosts: web
+  become: true
+  roles:
+    - webservers
+
+- hosts: lb
+  become: true
+  roles:
+    - loadbalancers
+
+#- hosts: zabbix
+#  become: true
+#  roles:
+#    - Zabbix_server
+
+- hosts: jenkins
+  vars:
+    jenkins_hostname: 192.168.56.104
+  become: true
+  roles:
+    - geerlingguy.jenkins
+...

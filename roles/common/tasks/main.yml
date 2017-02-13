@@ -1,0 +1,47 @@
+--- 
+- name: create u53r01 user
+  user:
+    name: u53r01
+    comment: "Access account UID"
+    group: wheel
+    shell: /bin/bash
+    home: /opt/u53r01
+- name: adding sshkey
+  authorized_key:
+    user: u53r01
+    state: present
+    key: "{{ lookup('file', '/opt/ansible/.ssh/id_rsa.pub') }}"
+- name: changing sudoers file
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^# %wheel        ALL=(ALL)       NOPASSWD: ALL'
+    line: '%wheel        ALL=(ALL)       NOPASSWD: ALL'
+# -------------------------------------------------------------
+# Taking sshd_config backup before changing port
+- name: taking sshd_config backup  
+  command: /bin/cp /etc/ssh/sshd_config /etc/ssh/sshd_config-BK 
+- name: change ssh port
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: '^#Port 22'
+    line: 'Port 2200'
+- name: opening new ssh port
+  command: /bin/firewall-cmd --zone=public --add-port=2200/tcp --permanent
+- name: reloading firewall rules
+  command: /bin/firewall-cmd --reload
+#
+- name: selinux change
+  lineinfile:
+    dest: /etc/selinux/config
+    state: present
+    regexp: 'SELINUX=enforcing'
+    line: 'SELINUX=permissive'
+    
+- command: /sbin/setenforce 0
+- name: restart sshd daemon
+  service:
+    name: sshd
+    state: restarted
+...
