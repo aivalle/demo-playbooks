@@ -5,6 +5,7 @@
 	<title>Minimal Flowplayer setup</title>
 </head><body>
 <h1>Server: <?php echo $_SERVER['SERVER_ADDR']; ?></h1>
+
     <!-- widescreen container, 560x240 (clip dimensions) * 1.15, center splash -->
 <div id="wowza" style="width:640px;height:480px;margin:0 auto;text-align:center">
 </div>
@@ -12,7 +13,7 @@
 
 $f("wowza", "http://releases.flowplayer.org/swf/flowplayer-3.2.15.swf", {
     clip: {
-        url: 'Ronaldo.mp4',
+        url: 'livestream',
         scaling: 'fit',
 	live: true,
 	autoPlay: true,
@@ -21,7 +22,7 @@ $f("wowza", "http://releases.flowplayer.org/swf/flowplayer-3.2.15.swf", {
     plugins: {
         hddn: {
             url: "flowplayer.rtmp-3.2.11.swf",
-		netConnectionUrl: 'rtmp://192.168.56.111:1935/vod2'
+		netConnectionUrl: 'rtmp://<?php echo $_SERVER['SERVER_ADDR']; ?>/live'
         }
     },
     canvas: {
