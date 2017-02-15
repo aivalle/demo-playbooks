@@ -14,10 +14,10 @@
 #  roles:
 #    - Zabbix_server
 
-- hosts: jenkins
-  vars:
-    jenkins_hostname: 192.168.56.104
-  become: true
-  roles:
-    - geerlingguy.jenkins
+#- hosts: jenkins
+#  vars:
+#    jenkins_hostname: 192.168.56.104
+#  become: true
+#  roles:
+#    - geerlingguy.jenkins
 ...
