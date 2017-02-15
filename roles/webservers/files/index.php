@@ -4,7 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<title>Minimal Flowplayer setup</title>
 </head><body>
-<h1>Server: <?php echo $_SERVER['SERVER_ADDR']; ?></h1>
+<h1>Server: <?php echo $_SERVER['SERVER_ADDR']; ?></h1></br></br>
     <!-- widescreen container, 560x240 (clip dimensions) * 1.15, center splash -->
 <div id="wowza" style="width:640px;height:480px;margin:0 auto;text-align:center">
 </div>
