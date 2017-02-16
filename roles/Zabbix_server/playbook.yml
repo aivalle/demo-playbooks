@@ -1,0 +1,35 @@
+---
+- hosts: all
+  pre_tasks:
+    - name: "Installing which"
+      action: yum
+              name={{ item }}
+              state=installed
+      with_items:
+        - net-tools
+        - which
+        - libselinux-python
+      register: installation_dependencies
+
+    - name: "Configure SUDO."
+      lineinfile:
+        dest: /etc/sudoers
+        line: "Defaults    !requiretty"
+        state: present
+      changed_when: installation_dependencies.changed
+
+    - name: "Make sure the docs are installed."
+      lineinfile:
+        dest: /etc/yum.conf
+        line: "tsflags=nodocs"
+        state: absent
+      changed_when: installation_dependencies.changed
+
+  roles:
+    - role: galaxyprojectdotorg.postgresql
+      when: inventory_hostname in groups['postgresql']
+      ignore_errors: True
+    - role: geerlingguy.mysql
+      when: inventory_hostname in groups['mysql']
+      ignore_errors: True
+    - role: ansible-zabbix-server
